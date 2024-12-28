@@ -1,3 +1,5 @@
+mod container_with_most_water;
+
 fn gcd(mut n: u64, mut m:u64) -> u64 {
     assert!(n!=0 && m!=0);
     while m!=0 {
@@ -14,7 +16,9 @@ fn gcd(mut n: u64, mut m:u64) -> u64 {
 
 fn main() {
     let answer = gcd(10, 20);
-    println!("{}", answer)
+    println!("{}", answer);
+    let list: Vec<usize> = vec![42, 16, 98, 12, 43, 12, 54];
+    container_with_most_water::container_with_most_water_fn(list);
 }
 
 #[test]
