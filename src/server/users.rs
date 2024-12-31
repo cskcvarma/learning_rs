@@ -1,6 +1,7 @@
 use crate::server::message::Message;
 
 use super::message::ChatMessage;
+use super::rooms::Room;
 
 pub struct User {
     pub username: String,
