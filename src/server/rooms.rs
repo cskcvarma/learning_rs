@@ -56,8 +56,14 @@ impl Room {
 mod tests {
     use super::*;
 
+    const ROOM_NAME: &str = "Test Room";
+    const ALICE: &str = "Alice";
+    const BOB: &str = "Bob";
+    const CONTENT: &str = "Content";
+    const REACTION: &str = "Wassup!";
+
     fn create_test_room() -> Room {
-        Room::new("Test Room")
+        Room::new(ROOM_NAME)
     }
 
     fn create_test_user(name: &str) -> User {
@@ -67,13 +73,46 @@ mod tests {
     #[test]
     fn test_room_creation() {
         let room = create_test_room();
-        assert_eq!(room.name, "Test room");
+        assert_eq!(room.name, ROOM_NAME);
         assert!(room.users.is_empty());
         assert_eq!(room.messages.len(), 0);
     }
 
     #[test]
     fn add_user_to_room() {
-        let room =  create_test_room();
+        let mut room =  create_test_room();
+
+        room.add_user(create_test_user(ALICE));
+        
+        assert_eq!(room.users.len(), 1)
+    }
+
+    #[test]
+    fn add_message_to_room() {
+        let mut room = create_test_room();
+        room.add_user(create_test_user(ALICE));
+
+        room.add_message(CONTENT);
+        
+        let last_message = room.messages.last().expect("No message found in the room");
+        let last_message_content = last_message.lock().unwrap();
+        assert_eq!(last_message_content.get_content(), CONTENT);
+    }
+
+    #[test]
+    fn react_to_last_message() {
+        let mut room: Room = create_test_room();
+        let alice = create_test_user(ALICE);
+        let bob = create_test_user(BOB);
+        room.add_user(alice);
+        room.add_user(bob);
+
+        room.add_message(CONTENT);
+        room.react_to_last_message(BOB, REACTION);
+        
+        let last_message = room.messages.last().expect("No messages found in the room");
+        
+        assert!(last_message.lock().unwrap().has_reactions());
+        assert_eq!(last_message.lock().unwrap().reactions.get(BOB), Some(&REACTION.to_string()));
     }
 }
