@@ -6,7 +6,7 @@ pub trait Message {
 
 pub struct ChatMessage {
     content: String,
-    reactions: std::collections::HashMap<String, String>,
+    pub reactions: std::collections::HashMap<String, String>,
 }
 
 impl ChatMessage {
