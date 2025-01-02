@@ -1,14 +1,12 @@
 use crate::server::message::Message;
 
 use super::message::ChatMessage;
-use super::rooms::Room;
 
 pub struct User {
     pub username: String,
 }
 
 impl User {
-
     pub fn new(username: &str) -> Self {
         Self {
             username: username.to_owned(),
