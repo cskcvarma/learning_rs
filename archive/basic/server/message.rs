@@ -28,7 +28,8 @@ impl Message for ChatMessage {
     }
 
     fn react(&mut self, username: &str, reaction: &str) {
-        self.reactions.insert(username.to_owned(), reaction.to_owned());
+        self.reactions
+            .insert(username.to_owned(), reaction.to_owned());
     }
 
     fn show_reactions(&self) {
@@ -58,7 +59,6 @@ mod tests {
         assert_eq!(message.reactions.len(), 2);
         assert_eq!(message.reactions.get("Alice"), Some(&"👍".to_string()));
         assert_eq!(message.reactions.get("Bob"), Some(&"😂".to_string()));
-
     }
 
     #[test]
@@ -86,11 +86,11 @@ mod tests {
             for (user, reaction) in &message.reactions {
                 writeln!(writer, "  {} reacted with: {}", user, reaction).unwrap();
             }
-
         }
 
         let output = String::from_utf8(buffer.into_inner()).expect("Invalid UTF-8");
 
+        assert!(message.has_reactions());
         assert!(output.contains("Alice reacted with: 👍"));
         assert!(output.contains("Bob reacted with: 😂"))
     }
